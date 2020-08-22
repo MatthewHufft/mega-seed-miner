@@ -1,8 +1,21 @@
-body { min-height: 100vh; display: flex; flex-direction: column; }
+/* * {
+    outline: 1px solid red;
+} */
+
+body { 
+    min-height: 100vh; 
+    display: flex;
+    flex-direction: column;
+}
 
 header{
-    height: 8vh;
+    height: 2vh;
 }
 main{
     flex-grow: 1;
 } 
+
+.item-bg {
+    background-image: url('main-bg.png');
+    background-size: cover;
+}

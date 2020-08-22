@@ -1,4 +1,4 @@
-let megaSeeds = 500;
+let megaSeeds = 0;
 
 let player = {
   minePerClick: 1
@@ -8,17 +8,21 @@ let upgrades = [
   {
     id: 4,
     name: "Laser Gun",
-    price: 100,
+    image: "lasergun-item.jpg",
+    price: 50,
+    priceIncrease: 1.1,
     quantity: 0,
-    mineValue: 5,
+    mineValue: 1,
     multiplier: 1.1
   },
   {
     id: 3,
     name: "Plumbus",
+    image: "plumbus-item.jpg",
     price: 500,
+    priceIncrease: 1.1,
     quantity: 0,
-    mineValue: 25,
+    mineValue: 5,
     multiplier: 1.3
   }
 ]
@@ -27,36 +31,60 @@ let autoUpgrades = [
   {
     id: 2,
     name: "Mortys",
-    price: 500,
+    image: "morty-item.jpg",
+    price: 2000,
+    priceIncrease: 1.2,
     quantity: 0,
-    mineValue: 0,
-    multiplier: 10
+    multiplier: 20
   },
   {
     id: 1,
     name: "Meeseeks",
-    price: 2000,
+    image: "meeseeks-item.jpg",
+    price: 5000,
+    priceIncrease: 1.2,
     quantity: 0,
-    mineValue: 0,
     multiplier: 50
   }
 ]
+
+let calculations = [
+  {title: "Mega seeds mined per click"},
+  {title: "Mega seeds mined passively per minute"}
+]
+
+
 
 function mine() {
 megaSeeds += player.minePerClick;
 updateScreen();
 }
 
+
 function drawInventory() {
   let template = ""
   let inventoryElem = document.getElementById('inventory')
 
   upgrades.forEach(upgrade => {
-    template += `<button onclick="buyUpgrade(${upgrade.id})"><h2>${upgrade.name}: ${upgrade.quantity}</h2></button>`;
+    // template += `<button onclick="buyUpgrade(${upgrade.id})">${upgrade.name}: ${upgrade.quantity}</button>`;
+       template += `<div class="card m-2 rounded" style="width: 45%;" onclick="buyUpgrade(${upgrade.id})">
+       <img src="${upgrade.image}" class="card-img-top" alt="...">
+       <div class="card-body bg-secondary">
+         <p class="card-text">Owned: ${upgrade.quantity}</p>
+         <p class="card-text">Cost: ${upgrade.price}</p>
+       </div>
+     </div>`
   });
   
   autoUpgrades.forEach(autoUpgrade => {
-    template += `<button onclick="buyAutoUpgrade(${autoUpgrade.id})"><h2>${autoUpgrade.name}: ${autoUpgrade.quantity}</h2></button>`;
+    // template += `<button onclick="buyAutoUpgrade(${autoUpgrade.id})">${autoUpgrade.name}: ${autoUpgrade.quantity}</button>`;
+       template += `<div class="card m-2" style="width: 45%;" onclick="buyAutoUpgrade(${autoUpgrade.id})">
+       <img src="${autoUpgrade.image}" class="card-img-top" alt="...">
+       <div class="card-body bg-secondary">
+         <p class="card-text">Owned: ${autoUpgrade.quantity}</p>
+         <p class="card-text">Cost: ${autoUpgrade.price}</p>
+       </div>
+     </div>`
   });
   inventoryElem.innerHTML = template;
 }
@@ -74,6 +102,7 @@ function buyUpgrade(id) {
   } else {
     upgrade.quantity++;
     megaSeeds -= upgrade.price;
+    upgrade.price = Math.floor(upgrade.price * upgrade.priceIncrease);
     player.minePerClick += upgrade.mineValue
   }
   updateScreen();
@@ -84,11 +113,12 @@ function buyAutoUpgrade(id) {
   let autoUpgrade = autoUpgrades.find(autoUpgrade => autoUpgrade.id == id)
   
   if (megaSeeds < autoUpgrade.price){
-    //alert user not enough mega seeds to buy
+    //TODO notify user they don't have enough seeds to buy the upgrade.
     console.log("not enough mega seeds")
   } else {
     autoUpgrade.quantity++;
     megaSeeds -= autoUpgrade.price;
+    autoUpgrade.price = Math.floor(autoUpgrade.price * autoUpgrade.priceIncrease);
     startInterval();
   }
   updateScreen();
