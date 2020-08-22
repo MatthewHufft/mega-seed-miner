@@ -9,13 +9,46 @@ body {
 }
 
 header{
-    height: 2vh;
+    /* height: 2vh; */
 }
 main{
     flex-grow: 1;
+    
 } 
 
-.item-bg {
-    background-image: url('main-bg.png');
+.main-bg {
+    background-image: url('main-background.png');
     background-size: cover;
+}
+
+.stat-bg {
+    background-image: url('stat-bg.jpg');
+    background-size: cover;
+}
+
+.grow { 
+    transition: all .2s ease-in-out; 
+    }
+    
+  .grow:hover { 
+    transform: scale(1.07); 
+    }
+
+.glow {
+    transition: all .2s ease-in-out; 
+    }
+
+    .glow:hover {
+        filter: drop-shadow(2px 2px 5px #d96eee) contrast(1.5);
+    }
+
+.shrink-on-click {
+    transition: all .2s ease-in-out; 
+}
+    .shrink-on-click:active {
+        transform:scale(0.9,0.9)
+    }
+
+.text-shadow {
+    text-shadow: 2px 2px #363636;
 }

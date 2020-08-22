@@ -1,7 +1,10 @@
+//TODO Refactor these stats inside player object
 let megaSeeds = 0;
+let currentAutomaticSeeds = 0;
 
 let player = {
-  minePerClick: 1
+  minePerClick: 1,
+  totalLifetimeSeeds: 0
 }
 
 let upgrades = [
@@ -35,28 +38,23 @@ let autoUpgrades = [
     price: 2000,
     priceIncrease: 1.2,
     quantity: 0,
-    multiplier: 20
+    multiplier: 10
   },
   {
     id: 1,
     name: "Meeseeks",
     image: "meeseeks-item.jpg",
     price: 5000,
-    priceIncrease: 1.2,
+    priceIncrease: 1.3,
     quantity: 0,
-    multiplier: 50
+    multiplier: 25
   }
 ]
-
-let calculations = [
-  {title: "Mega seeds mined per click"},
-  {title: "Mega seeds mined passively per minute"}
-]
-
 
 
 function mine() {
 megaSeeds += player.minePerClick;
+player.totalLifetimeSeeds += player.minePerClick
 updateScreen();
 }
 
@@ -67,7 +65,7 @@ function drawInventory() {
 
   upgrades.forEach(upgrade => {
     // template += `<button onclick="buyUpgrade(${upgrade.id})">${upgrade.name}: ${upgrade.quantity}</button>`;
-       template += `<div class="card m-2 rounded" style="width: 45%;" onclick="buyUpgrade(${upgrade.id})">
+       template += `<div class="card m-2 rounded shadow grow shrink-on-click" style="width: 45%;" onclick="buyUpgrade(${upgrade.id})">
        <img src="${upgrade.image}" class="card-img-top" alt="...">
        <div class="card-body bg-secondary">
          <p class="card-text">Owned: ${upgrade.quantity}</p>
@@ -78,7 +76,7 @@ function drawInventory() {
   
   autoUpgrades.forEach(autoUpgrade => {
     // template += `<button onclick="buyAutoUpgrade(${autoUpgrade.id})">${autoUpgrade.name}: ${autoUpgrade.quantity}</button>`;
-       template += `<div class="card m-2" style="width: 45%;" onclick="buyAutoUpgrade(${autoUpgrade.id})">
+       template += `<div class="card m-2 shadow grow shrink-on-click" style="width: 45%;" onclick="buyAutoUpgrade(${autoUpgrade.id})">
        <img src="${autoUpgrade.image}" class="card-img-top" alt="...">
        <div class="card-body bg-secondary">
          <p class="card-text">Owned: ${autoUpgrade.quantity}</p>
@@ -92,7 +90,20 @@ function drawInventory() {
 function updateScreen() {
   let megaSeedsCountElem = document.getElementById('megaSeedsCount');
   megaSeedsCountElem.innerHTML = `${megaSeeds}`;
+
+  updateCalculations();
 }
+
+function updateCalculations() {
+  let seedsPerClickElem = document.getElementById('seedsPerClick')
+  let seedsPerMinuteElem = document.getElementById('seedsPerMinute')
+  let totalSeedsElem = document.getElementById('totalSeedsCollected')
+  let calculatePerMinute = currentAutomaticSeeds * 20;
+  seedsPerClickElem.innerHTML = `${player.minePerClick}`
+  seedsPerMinuteElem.innerHTML = `${calculatePerMinute}`
+  totalSeedsElem.innerHTML = `${player.totalLifetimeSeeds}`
+}
+
 
 function buyUpgrade(id) {
   let upgrade = upgrades.find(upgrade => upgrade.id == id)
@@ -133,15 +144,19 @@ function collectAutoUpgrades() {
     autoUpgradeValue += autoUpgrade.quantity * autoUpgrade.multiplier
   }
    megaSeeds += autoUpgradeValue;
+   player.totalLifetimeSeeds += autoUpgradeValue;
+   currentAutomaticSeeds = autoUpgradeValue;
    updateScreen()
 }
 
 function startInterval() {
 
-  setInterval(collectAutoUpgrades, 1000);
+  setInterval(collectAutoUpgrades, 3000);
 }
 
+function playMusic() {
+}
 
-
+playMusic();
 updateScreen();
 drawInventory();
