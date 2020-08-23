@@ -128,6 +128,7 @@ function buyUpgrade(id) {
     megaSeeds -= upgrade.price;
     upgrade.price = Math.floor(upgrade.price * upgrade.priceIncrease);
     player.minePerClick += upgrade.mineValue;
+    // @ts-ignore
     document.getElementById(upgrade.sound).play();
   }
   updateScreen();
@@ -144,6 +145,7 @@ function buyAutoUpgrade(id) {
     autoUpgrade.quantity++;
     megaSeeds -= autoUpgrade.price;
     autoUpgrade.price = Math.floor(autoUpgrade.price * autoUpgrade.priceIncrease);
+    // @ts-ignore
     document.getElementById(autoUpgrade.sound).play();
     startInterval();
   }
@@ -169,9 +171,6 @@ function startInterval() {
   setInterval(collectAutoUpgrades, 3000);
 }
 
-function playMusic() {
-  document.getElementById('bg-music').play();
-}
 
 updateScreen();
 drawInventory();
