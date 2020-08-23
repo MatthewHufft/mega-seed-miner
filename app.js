@@ -11,6 +11,7 @@ let upgrades = [
   {
     id: 4,
     name: "Laser Gun",
+    sound: "laser-gun-sound",
     image: "lasergun-item.jpg",
     price: 50,
     priceIncrease: 1.1,
@@ -21,6 +22,7 @@ let upgrades = [
   {
     id: 3,
     name: "Plumbus",
+    sound: "plumbus-sound",
     image: "plumbus-item.jpg",
     price: 500,
     priceIncrease: 1.1,
@@ -34,6 +36,7 @@ let autoUpgrades = [
   {
     id: 2,
     name: "Mortys",
+    sound: "morty-sound",
     image: "morty-item.jpg",
     price: 2000,
     priceIncrease: 1.2,
@@ -43,6 +46,7 @@ let autoUpgrades = [
   {
     id: 1,
     name: "Meeseeks",
+    sound: "meeseeks-sound",
     image: "meeseeks-item.jpg",
     price: 5000,
     priceIncrease: 1.3,
@@ -56,8 +60,17 @@ function mine() {
 megaSeeds += player.minePerClick;
 player.totalLifetimeSeeds += player.minePerClick
 updateScreen();
+drawMegaSeed();
 }
 
+function drawMegaSeed() {
+  let megaSeedElem = document.getElementById('megaSprite')
+  megaSeedElem.innerHTML = `<img src="/mega-seed-sprite.jpg" alt="megaseed" class="sprite">`
+
+  setTimeout(() => {
+    megaSeedElem.innerHTML = ""
+  }, 1000)
+}
 
 function drawInventory() {
   let template = ""
@@ -114,7 +127,8 @@ function buyUpgrade(id) {
     upgrade.quantity++;
     megaSeeds -= upgrade.price;
     upgrade.price = Math.floor(upgrade.price * upgrade.priceIncrease);
-    player.minePerClick += upgrade.mineValue
+    player.minePerClick += upgrade.mineValue;
+    document.getElementById(upgrade.sound).play();
   }
   updateScreen();
   drawInventory();
@@ -122,7 +136,7 @@ function buyUpgrade(id) {
 
 function buyAutoUpgrade(id) {
   let autoUpgrade = autoUpgrades.find(autoUpgrade => autoUpgrade.id == id)
-  
+  let soundBite = autoUpgrade.sound
   if (megaSeeds < autoUpgrade.price){
     //TODO notify user they don't have enough seeds to buy the upgrade.
     console.log("not enough mega seeds")
@@ -130,6 +144,7 @@ function buyAutoUpgrade(id) {
     autoUpgrade.quantity++;
     megaSeeds -= autoUpgrade.price;
     autoUpgrade.price = Math.floor(autoUpgrade.price * autoUpgrade.priceIncrease);
+    document.getElementById(autoUpgrade.sound).play();
     startInterval();
   }
   updateScreen();
@@ -155,8 +170,8 @@ function startInterval() {
 }
 
 function playMusic() {
+  document.getElementById('bg-music').play();
 }
 
-playMusic();
 updateScreen();
 drawInventory();

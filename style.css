@@ -8,12 +8,9 @@ body {
     flex-direction: column;
 }
 
-header{
-    /* height: 2vh; */
-}
 main{
     flex-grow: 1;
-    
+
 } 
 
 .main-bg {
@@ -51,4 +48,11 @@ main{
 
 .text-shadow {
     text-shadow: 2px 2px #363636;
+}
+
+.sprite {
+    max-width: 25px;
+    position: absolute;
+    top: 35px;
+    left: 335px;
 }
