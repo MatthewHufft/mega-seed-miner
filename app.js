@@ -1,5 +1,5 @@
 //TODO Refactor these stats inside player object
-let megaSeeds = 0;
+let megaSeeds = 9999;
 let currentAutomaticSeeds = 0;
 
 let player = {
@@ -65,7 +65,7 @@ drawMegaSeed();
 
 function drawMegaSeed() {
   let megaSeedElem = document.getElementById('megaSprite')
-  megaSeedElem.innerHTML = `<img src="/mega-seed-sprite.jpg" alt="megaseed" class="sprite">`
+  megaSeedElem.innerHTML = `<img src="./mega-seed-sprite.jpg" alt="megaseed" class="sprite">`
 
   setTimeout(() => {
     megaSeedElem.innerHTML = ""
