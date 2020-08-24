@@ -16,6 +16,7 @@ main{
 .main-bg {
     background-image: url('main-background.png');
     background-size: cover;
+    height: 100vh
 }
 
 .stat-bg {

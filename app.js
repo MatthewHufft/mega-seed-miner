@@ -129,7 +129,9 @@ function buyUpgrade(id) {
     upgrade.price = Math.floor(upgrade.price * upgrade.priceIncrease);
     player.minePerClick += upgrade.mineValue;
     // @ts-ignore
-    document.getElementById(upgrade.sound).play();
+    let soundElem = document.getElementById(upgrade.sound)
+    soundElem.currentTime = 0
+    soundElem.play();
   }
   updateScreen();
   drawInventory();
